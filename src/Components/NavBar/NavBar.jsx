@@ -1,21 +1,24 @@
 import React from 'react';
-import {ItemList} from './ItemList';
 
-export const NavBar = (props) => {
-
-    const handleClick = (event) => {
-        const ClickedItem = event.target;
-        document.querySelector('.active').classList.remove('active');
-        ClickedItem.classList.add('active');
+export class NavBar extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            initialActiveItem: this.props.initialActiveItem
+        }
+        this.handleClick = this.handleClick.bind(this);
     }
-    const ItemsList = props.items.map((item, index) => (
-        <ItemList key={index} link="#" text={item}
-                         initialActiveItem={props.initialActiveItem === item ? 'active': null} />
-    ));
 
-    return (
-        <div className={props.clsName} onClick={handleClick}>
-            {ItemsList}
-        </div>
-    )
+     handleClick = (event) => {
+        this.setState({initialActiveItem: event.target.text});
+    }
+    render() {
+        return (
+            <div className={this.props.clsName} onClick={this.handleClick}>
+                {this.props.items.map((item, index) => (
+                    <a key={index} href="#"
+                       className={this.state.initialActiveItem === item ? 'active' : null}>{item}</a>))}
+            </div>
+        )
+    }
 }
